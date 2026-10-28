@@ -5,7 +5,7 @@
   "description": "친구들과 함께하는 온라인 라이어 게임",
   "type": "module",
   "engines": {
-    "node": ">=22.18"
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "scripts": {
     "dev": "concurrently -k -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",

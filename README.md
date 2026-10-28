@@ -16,8 +16,14 @@
 ## 빠른 시작
 
 ### 준비물
-- [Node.js](https://nodejs.org/ko) **22.18 이상**. 이 버전부터 서버의 TypeScript 파일을 빌드 없이 바로 실행할 수 있습니다.
+- [Node.js](https://nodejs.org/ko) **보안 업데이트가 적용된 버전**: `22.23.4 이상(22.x)`, `24.22.1 이상(24.x)`, `26.12.1 이상` 중 하나
+  - 기준: [2026년 10월 21일 Node.js 보안 릴리스](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases). TLS 인증서 호스트 검증 우회, DNS·Brotli 관련 High 등급 취약점이 수정되었습니다.
+  - 23.x와 25.x는 지원이 끝나 패치가 나오지 않았으므로 쓸 수 없습니다.
   - 버전 확인: `node --version`
+  - 조건에 맞지 않는 Node에서는 설치와 실행이 모두 막힙니다.
+    - **설치**: `.npmrc`의 `engine-strict=true` 때문에 `npm ci`가 거부됩니다.
+    - **실행**: 서버가 시작할 때 버전을 검사하고 종료합니다.
+  - 기준 버전은 [`server/node-version.ts`](server/node-version.ts)에 있습니다. 새 보안 릴리스가 나오면 이 파일과 `package.json`의 `engines`, `Dockerfile`의 `NODE_VERSION`을 함께 올리세요. 셋이 어긋나면 테스트가 실패합니다.
 
 ### 개발 모드로 실행
 

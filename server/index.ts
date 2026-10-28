@@ -12,7 +12,11 @@
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { createGameServer } from './app.ts'
+import { assertSecureNodeVersion } from './node-version.ts'
 import { loadWords } from './words/load.ts'
+
+// 보안 업데이트가 적용되지 않은 Node.js에서는 실행하지 않는다 (server/node-version.ts)
+assertSecureNodeVersion()
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const env = process.env

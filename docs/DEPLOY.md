@@ -69,6 +69,10 @@ docker run -d --name liar-game --restart unless-stopped -p 3000:3000 -v liar-dat
   ```
 
 - 로그를 보려면 `docker logs -f liar-game`을 실행합니다. 이미지에 HEALTHCHECK(`/healthz`)가 들어 있어 `docker ps`에서 상태가 보입니다.
+- 베이스 이미지는 보안 패치가 적용된 `node:22.23.4-alpine`으로 **고정**되어 있습니다(Dockerfile의 `ARG NODE_VERSION`).
+  - `node:22-alpine` 같은 움직이는 태그는 빌드하는 컴퓨터에 받아 둔 옛 이미지가 그대로 쓰일 수 있어 피했습니다.
+  - 다른 버전으로 빌드하려면 `docker build --build-arg NODE_VERSION=24.22.1 -t liar-game .`처럼 지정합니다.
+  - 보안 패치 이전 버전을 지정하면 컨테이너가 시작하자마자 종료됩니다.
 
 ### docker compose 예시
 
@@ -147,7 +151,9 @@ server {
 
 ## 4. Docker 없이 systemd로 상시 실행 (Linux)
 
-서버에 Node.js 22.18 이상이 설치되어 있어야 합니다. 이 버전부터 TypeScript 파일을 빌드 없이 실행할 수 있습니다.
+서버에 **보안 업데이트가 적용된 Node.js**가 설치되어 있어야 합니다. 허용 버전은 `22.23.4 이상(22.x)`, `24.22.1 이상(24.x)`, `26.12.1 이상`입니다.
+기준은 [2026-10-21 보안 릴리스](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases)이며, 낮은 버전에서는 서버가 시작하지 않습니다.
+배포판 기본 패키지(apt 등)의 Node는 오래된 경우가 많으니 [NodeSource](https://github.com/nodesource/distributions)나 [nvm](https://github.com/nvm-sh/nvm) 등으로 설치하세요.
 
 ```bash
 cd /opt/liar-game && npm ci && npm run build && npm prune --omit=dev
@@ -198,6 +204,15 @@ Dockerfile이 있으므로 대부분의 PaaS에서 "Docker로 배포"를 선택�
   - 위 요금제·정책은 **작성 시점 기준이며 바뀔 수 있습니다.** 공식 문서에서 최신 조건을 확인하세요.
 
 ---
+
+## Node.js 보안 업데이트가 나왔을 때
+
+Node.js 보안 릴리스는 [보안 공지 목록](https://nodejs.org/en/blog/vulnerability)에서 확인할 수 있습니다. 새 릴리스가 나오면 아래 순서로 반영합니다.
+
+1. [`server/node-version.ts`](../server/node-version.ts)의 `SECURE_NODE_MINIMUMS`와 공지 링크를 새 패치 버전으로 바꿉니다.
+2. `package.json`의 `engines.node`를 같은 범위로 바꿉니다. `npm test`가 1번과 같은지 검사합니다.
+3. `Dockerfile`의 `ARG NODE_VERSION`을 바꿉니다. 이것도 테스트가 검사합니다.
+4. 서버의 Node를 업데이트한 뒤 재시작합니다. Docker를 쓴다면 이미지를 다시 빌드해 배포합니다.
 
 ## 배포 후 확인 체크리스트
 
