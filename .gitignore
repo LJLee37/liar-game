@@ -1,0 +1,15 @@
+# 의존성·빌드 결과물
+node_modules/
+dist/
+
+# 판정 로그 등 실행 중 생성되는 데이터 (폴더만 유지)
+data/*
+!data/.gitkeep
+
+# Playwright 스모크 테스트 스크린샷
+smoke-output/
+
+# 기타
+*.log
+.DS_Store
+.env
