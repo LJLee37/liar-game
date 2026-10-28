@@ -1,0 +1,26 @@
+# 푸시할 때마다 타입 검사·단어 목록 검사·테스트·빌드를 실행한다.
+# GitHub Actions 문서: https://docs.github.com/ko/actions
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: 타입 검사
+        run: npm run typecheck
+      - name: 단어 목록 검사 (중복·별칭 충돌)
+        run: npm run check:words
+      - name: 테스트
+        run: npm test
+      - name: 클라이언트 빌드
+        run: npm run build

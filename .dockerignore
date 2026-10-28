@@ -1,0 +1,8 @@
+node_modules
+dist
+data
+smoke-output
+.git
+.github
+*.log
+.env

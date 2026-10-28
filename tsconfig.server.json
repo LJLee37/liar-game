@@ -3,8 +3,22 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2023"],
-    "types": ["node"]
+    "lib": [
+      "ES2023"
+    ],
+    "types": [
+      "node"
+    ]
   },
-  "include": ["server/**/*.ts", "shared/**/*.ts", "scripts/**/*.ts", "test/**/*.ts", "vite.config.ts", "vitest.config.ts"]
+  "include": [
+    "server/**/*.ts",
+    "shared/**/*.ts",
+    "scripts/**/*.ts",
+    "test/**/*.ts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": [
+    "scripts/smoke.ts"
+  ]
 }

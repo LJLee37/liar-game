@@ -50,7 +50,10 @@ export async function createGameServer(options: GameServerOptions) {
       res.sendFile(join(clientDir, 'index.html'))
     })
   } else if (clientDir) {
-    log(`클라이언트 빌드가 없어요 (${clientDir}). 'npm run build'를 먼저 실행하거나 개발 모드(npm run dev)를 쓰세요.`)
+    log(
+      `클라이언트 빌드(${clientDir})가 없어 화면은 제공하지 않아요. ` +
+        `개발 중이면 Vite 주소(http://localhost:5173)로 접속하고, 운영이면 'npm run build'를 먼저 실행하세요.`,
+    )
   }
 
   const httpServer = createServer(app)

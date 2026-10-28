@@ -1,0 +1,19 @@
+/* 모바일에서 입력창을 누를 때 화면이 확대되지 않도록 16px 이상 유지 */
+input,
+textarea {
+  font-size: 16px !important;
+}
+
+body {
+  overscroll-behavior-y: none;
+}
+
+.word-break {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.max-width {
+  max-width: 1100px;
+  margin: 0 auto;
+}
