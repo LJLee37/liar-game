@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "liar-game/words/schema.json",
+  "title": "라이어 게임 단어 카테고리",
+  "description": "words/<id>.yaml 파일 하나가 카테고리 하나입니다. 자세한 규칙은 words/README.md 참고.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name"],
+  "anyOf": [{ "required": ["groups"] }, { "required": ["words"] }],
+  "properties": {
+    "name": {
+      "description": "화면에 보이는 카테고리 이름 (예: 음식)",
+      "type": "string",
+      "minLength": 1
+    },
+    "icon": {
+      "description": "카테고리 옆에 보이는 이모지 (선택)",
+      "type": "string"
+    },
+    "description": {
+      "description": "카테고리 설명 (선택)",
+      "type": "string"
+    },
+    "groups": {
+      "description": "소분류 이름 → 단어 목록. 바보 모드에서는 같은 소분류의 단어를 라이어에게 우선 배정합니다.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/wordList" }
+    },
+    "words": {
+      "description": "소분류 없는 단어 목록",
+      "$ref": "#/$defs/wordList"
+    }
+  },
+  "$defs": {
+    "wordList": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/entry" }
+    },
+    "entry": {
+      "description": "단어 하나. '- 단어' 또는 별칭이 있으면 '- 단어: [별칭1, 별칭2]' / '- 단어: 별칭'",
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "additionalProperties": {
+            "description": "별칭: 정답으로 자동 인정되는 다른 표기",
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
