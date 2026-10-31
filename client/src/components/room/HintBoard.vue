@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useQuasar } from 'quasar'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { LIMITS } from '../../../../shared/constants.ts'
 import { isSubmitEnter } from '../../labels.ts'
 import { useRoomStore } from '../../stores/room.ts'
 
+const $q = useQuasar()
 const room = useRoomStore()
 const { view, round } = storeToRefs(room)
 
@@ -70,7 +72,7 @@ onBeforeUnmount(() => {
         outlined
         autofocus
         color="primary"
-        bg-color="yellow-1"
+        :bg-color="$q.dark.isActive ? undefined : 'yellow-1'"
         label="내 차례예요! 제시어를 한 줄로 설명하세요"
         hint="제시어를 그대로 쓰면 안 돼요. Enter로 제출"
         :maxlength="LIMITS.hint.max"
