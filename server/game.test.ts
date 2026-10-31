@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { fileURLToPath } from 'node:url'
-import { TIMINGS } from '../shared/constants.ts'
+import { LIMITS, TIMINGS } from '../shared/constants.ts'
 import type { RoomView } from '../shared/protocol.ts'
 import {
   abortRound,
@@ -483,7 +483,7 @@ describe('방 관리', () => {
   it('닉네임 검증·중복·정원', () => {
     const { room, ctx } = setup(3)
     expect(addPlayer(room, '', ctx)).toEqual({ ok: false, error: 'NAME_INVALID' })
-    expect(addPlayer(room, '아주아주아주긴닉네임입니다', ctx)).toEqual({ ok: false, error: 'NAME_INVALID' })
+    expect(addPlayer(room, '긴'.repeat(LIMITS.playerName.max + 1), ctx)).toEqual({ ok: false, error: 'NAME_INVALID' })
     expect(addPlayer(room, ' p 1 ', ctx)).toEqual({ ok: false, error: 'NAME_TAKEN' })
     room.maxPlayers = 3
     expect(addPlayer(room, '새사람', ctx)).toEqual({ ok: false, error: 'ROOM_FULL' })

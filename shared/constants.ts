@@ -6,7 +6,7 @@ import type { ErrorCode, GameMode, JudgeMode, Phase, RoomSettings } from './prot
 
 /** 글자 수 제한 (정규화 후 기준) */
 export const LIMITS = {
-  playerName: { min: 1, max: 10 },
+  playerName: { min: 1, max: 20 },
   roomName: { min: 1, max: 20 },
   password: { max: 20 },
   hint: { min: 1, max: 40 },
